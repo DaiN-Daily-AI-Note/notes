@@ -1,0 +1,27 @@
+{
+  "tag": "kc",
+  "arm": "gemini-4-carbon",
+  "read_at": "2026-11-19T21:09:19+09:00",
+  "tasks": {
+    "A": {
+      "input": 71249,
+      "output": 11796,
+      "cache_read": 560942,
+      "model_calls": 13,
+      "extra_user_messages": 0,
+      "log_span_minutes": 3.23,
+      "cost_usd_nov": 0.3166,
+      "cost_usd_dec": 0.6331
+    },
+    "B": {
+      "input": 21301,
+      "output": 7268,
+      "cache_read": 386567,
+      "model_calls": 6,
+      "extra_user_messages": 0,
+      "log_span_minutes": 1.57,
+      "cost_usd_nov": 0.1539,
+      "cost_usd_dec": 0.3079
+    }
+  }
+}

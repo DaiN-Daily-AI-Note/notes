@@ -1,0 +1,27 @@
+{
+  "tag": "kd",
+  "arm": "gemini-4-neon",
+  "read_at": "2026-11-19T21:13:07+09:00",
+  "tasks": {
+    "A": {
+      "input": 46178,
+      "output": 5763,
+      "cache_read": 206251,
+      "model_calls": 7,
+      "extra_user_messages": 0,
+      "log_span_minutes": 1.25,
+      "cost_usd_nov": 0.2559,
+      "cost_usd_dec": 0.2559
+    },
+    "B": {
+      "input": 17236,
+      "output": 4986,
+      "cache_read": 277044,
+      "model_calls": 6,
+      "extra_user_messages": 0,
+      "log_span_minutes": 1.05,
+      "cost_usd_nov": 0.1681,
+      "cost_usd_dec": 0.1681
+    }
+  }
+}

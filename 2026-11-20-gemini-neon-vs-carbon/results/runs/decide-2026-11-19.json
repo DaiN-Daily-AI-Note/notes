@@ -1,0 +1,25 @@
+{
+  "n_neon": 2,
+  "n_carbon": 2,
+  "quality_diff_neon_minus_carbon": {
+    "A": 0.0,
+    "B": 0.0
+  },
+  "time_ratio_neon_over_carbon": {
+    "A": 0.53,
+    "B": 0.56
+  },
+  "speed_claim_allowed": true,
+  "quota_used": "측정 못 함(표시 없음·통이 다름·한쪽만 있음)",
+  "cost_ratio_neon_over_carbon": {
+    "nov": {
+      "A": 0.8,
+      "B": 0.91
+    },
+    "dec": {
+      "A": 0.4,
+      "B": 0.46
+    }
+  },
+  "decision": "네온 품질 같음 + 더 빠르게 → 장면 5·6을 '우리 과제에선 같은 결과를 더 빠르게 냈다'로"
+}

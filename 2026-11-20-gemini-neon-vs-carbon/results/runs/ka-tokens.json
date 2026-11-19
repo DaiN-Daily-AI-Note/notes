@@ -1,0 +1,27 @@
+{
+  "tag": "ka",
+  "arm": "gemini-4-neon",
+  "read_at": "2026-11-19T20:52:22+09:00",
+  "tasks": {
+    "A": {
+      "input": 46859,
+      "output": 4262,
+      "cache_read": 191135,
+      "model_calls": 7,
+      "extra_user_messages": 0,
+      "log_span_minutes": 1.03,
+      "cost_usd_nov": 0.2332,
+      "cost_usd_dec": 0.2332
+    },
+    "B": {
+      "input": 17068,
+      "output": 4206,
+      "cache_read": 253832,
+      "model_calls": 6,
+      "extra_user_messages": 0,
+      "log_span_minutes": 0.92,
+      "cost_usd_nov": 0.1524,
+      "cost_usd_dec": 0.1524
+    }
+  }
+}

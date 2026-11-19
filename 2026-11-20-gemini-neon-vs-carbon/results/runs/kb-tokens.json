@@ -1,0 +1,27 @@
+{
+  "tag": "kb",
+  "arm": "gemini-4-carbon",
+  "read_at": "2026-11-19T20:59:55+09:00",
+  "tasks": {
+    "A": {
+      "input": 63588,
+      "output": 12033,
+      "cache_read": 497219,
+      "model_calls": 13,
+      "extra_user_messages": 0,
+      "log_span_minutes": 3.2,
+      "cost_usd_nov": 0.2972,
+      "cost_usd_dec": 0.5945
+    },
+    "B": {
+      "input": 32933,
+      "output": 7456,
+      "cache_read": 576689,
+      "model_calls": 9,
+      "extra_user_messages": 0,
+      "log_span_minutes": 2.07,
+      "cost_usd_nov": 0.1981,
+      "cost_usd_dec": 0.3962
+    }
+  }
+}
