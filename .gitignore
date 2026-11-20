@@ -4,3 +4,8 @@ __pycache__/
 *.hwp
 *.hwpx
 *.pdf
+.pytest_cache/
+.venv/
+.env
+.env.*
+*.log

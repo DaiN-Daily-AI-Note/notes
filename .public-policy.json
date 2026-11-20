@@ -1,0 +1,12 @@
+{
+  "allowed_authors": [
+    "noreply@dain-daily-ai-note.invalid"
+  ],
+  "allowed_paths": [
+    "^(README\\.md|LICENSE|\\.gitignore|\\.public-policy\\.json|\\.githooks/pre-push|tools/public_guard\\.py)$",
+    "^\\d{4}-\\d{2}-\\d{2}-[a-z0-9-]+/"
+  ],
+  "allow_term_numbers": [
+    1
+  ]
+}
