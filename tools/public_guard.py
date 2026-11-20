@@ -8,7 +8,7 @@ repository does not allow, or any term from the local private term list.
 
 The private term list never lives in the repository. It is read from
 $PUBLIC_GUARD_TERMS or ~/.config/public-guard/terms.json (mode 600):
-    {"terms": ["..."], "emails": ["..."]}
+    {"terms": ["..."], "emails": ["..."], "paths": ["regex", ...]}
 If it is missing or readable by others, every push is blocked (fail closed).
 
 Per-repository rules live in .public-policy.json at the repository root:
@@ -71,16 +71,17 @@ def _git(repo: Path, *args: str, binary: bool = False, check: bool = True):
     return r.stdout if binary else r.stdout.decode("utf-8", "replace")
 
 
-def _load_terms() -> tuple[list[str], list[Problem]]:
+def _load_terms() -> tuple[list[str], list[re.Pattern], list[Problem]]:
     path = Path(os.environ.get("PUBLIC_GUARD_TERMS") or DEFAULT_TERMS).expanduser()
     if not path.is_file():
-        return [], [Problem("terms-missing", str(path),
+        return [], [], [Problem("terms-missing", str(path),
                             "create the private term list (mode 600) before pushing; see the header of public_guard.py")]
     if path.stat().st_mode & 0o077:
-        return [], [Problem("terms-permissions", str(path), "run: chmod 600 on the private term list")]
+        return [], [], [Problem("terms-permissions", str(path), "run: chmod 600 on the private term list")]
     data = json.loads(path.read_text(encoding="utf-8"))
     terms = [str(t) for t in (data.get("terms") or []) + (data.get("emails") or []) if str(t).strip()]
-    return terms, []
+    paths = [re.compile(p) for p in data.get("paths") or []]
+    return terms, paths, []
 
 
 def _load_policy(repo: Path, rev: str) -> dict | None:
@@ -103,7 +104,7 @@ def _commits(repo: Path, rev: str, base: str | None) -> list[str]:
 def check_rev(repo: Path | str, rev: str = "HEAD", base: str | None = None) -> list[Problem]:
     """Problems in the tree at `rev` and in the commits after `base` (only `rev` itself when base is None)."""
     repo = Path(repo)
-    terms, problems = _load_terms()
+    terms, private_paths, problems = _load_terms()
     if problems:
         return problems
     try:
@@ -134,6 +135,10 @@ def check_rev(repo: Path | str, rev: str = "HEAD", base: str | None = None) -> l
         if allowed and not any(a.search(path) for a in allowed):
             problems.append(Problem("path-not-allowed", path, f"this path is outside the allowed_paths in {POLICY_FILE}"))
             continue
+        n = next((i for i, rx in enumerate(private_paths, start=1) if rx.search(path)), None)
+        if n is not None:
+            problems.append(Problem("private-path", path, f"matches private path rule #{n} from the local term list; keep this file out of the repository"))
+            continue
         if any(d.search(path) for d in denied):
             problems.append(Problem("path-denied", path, f"this path matches denied_paths in {POLICY_FILE}"))
             continue
@@ -155,6 +160,11 @@ def check_rev(repo: Path | str, rev: str = "HEAD", base: str | None = None) -> l
     authors = set(policy.get("allowed_authors") or [])
     for c in _commits(repo, rev, base):
         author, committer = _git(repo, "show", "-s", "--format=%ae%n%ce", c).split("\n")[:2]
+        msg = _git(repo, "show", "-s", "--format=%B", c)
+        low_msg = msg.lower()
+        if any(pat.search(msg) for _name, pat, _hint in CONTENT_RULES) or any(t in low_msg for t, _i in lowered):
+            problems.append(Problem("commit-message", c[:8], "the commit message contains a private term, path or address; "
+                                                             "reword it with git commit --amend"))
         bad = [e for e in (author, committer) if e not in authors and not (e == committer == WEB_COMMITTER)]
         if bad:
             problems.append(Problem("author", c[:8], "commit author or committer is not in allowed_authors; "
